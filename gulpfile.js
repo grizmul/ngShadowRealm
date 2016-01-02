@@ -32,10 +32,8 @@ gulp.task('webserver', function() {
   gulp.src('dist')
     .pipe(webserver({
       livereload: true,
-      directoryListing: true,
- //s     open: true,
-      path : "/dist",
-      fallback: "index.html"
+      directoryListing: false, // With this off it opens index.html otherwise issues
+      open: true
     }));
 });
 gulp.task('watchSrc', function(){

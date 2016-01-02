@@ -4,7 +4,10 @@
   "description": "game",
   "main": "gulpfile.js",
   "dependencies": {
-    "gulp": "^3.9.0",
+
+  },
+  "devDependencies": {
+          "gulp": "^3.9.0",
     "angular": "^1.4.8",
     "gulp-headerfooter": "^1.0.3",
     "gulp-concat": "^2.6.0",
@@ -13,7 +16,6 @@
     "jshint": "^2.8.0",
     "jshint-stylish": "^2.1.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
