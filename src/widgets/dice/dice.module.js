@@ -1,0 +1,4 @@
+    angular 
+        .module('dice',[
+            'HtmlPartials'
+        ]); 
