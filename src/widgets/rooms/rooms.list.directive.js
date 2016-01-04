@@ -14,26 +14,24 @@ function ListRoomsDirective(){
 }
 
 ListRoomsController.$inject = ['es'];
-function ListRoomsController(es){
+function ListRoomsController(es) {
     var vm = this;
-    
+
     es.search({
         index: 'rooms',
-        q: 'name:*'
-    }, function (err, resp) {
-        if (err) {
-            console.log('Error searching');
-            console.log(err);
-        } else {
-            if (resp.hits.total > 0) {
-                console.log(resp.hits.hits);
-                vm.rooms = resp.hits.hits;
-            }
-            else {
-                console.log("not yuet");
-                console.log(resp.hits);
+        type: 'room',
+        //q: 'name:*'
+        body: {
+            query: {
+                match_all: {}
             }
         }
+    }).then(function (body) {
+        //var hits = body.hits.hits;
+        //console.log(hits);
+        vm.rooms = body.hits.hits;
+    }, function (error) {
+        console.trace(error.message);
     });
-    
+
 }
