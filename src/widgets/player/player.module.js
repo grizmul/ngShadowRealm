@@ -1,4 +1,6 @@
    angular 
         .module('Player',[ 
            'HtmlPartials'
-        ]); 
+        ])
+        
+        ; 

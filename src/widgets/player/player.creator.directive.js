@@ -13,8 +13,9 @@ function Directive() {//dependency1) {
         controller: ControllerController,
         controllerAs: 'vm',
         templateUrl: 'player.creator.partial.html',
+        replace: true,
         link: link,
-        restrict: 'EA',
+        restrict: 'A',
         scope: {
         }
     };
@@ -25,15 +26,47 @@ function Directive() {//dependency1) {
     }
 }
 /* @ngInject */
-function ControllerController() {
+ControllerController.$inject = ['es'];
+function ControllerController(es) {
     var vm = this;
     vm.roll = roll;
     vm.dieroll = dieroll;
     vm.calcMaxHitPoints = calcMaxHitPoints;
     vm.calcBaseDmg = calcBaseDmg;
     vm.calcBaseMagicDmg = calcBaseMagicDmg;
-    vm.calcBaseToHit=calcBaseToHit;
+    vm.calcBaseToHit = calcBaseToHit;
     
+    vm.obj = {};
+    
+    es.ping({
+        requestTimeout: 1000,
+        hello: "elasticsearch!"
+    }, function (error) {
+        if (error) {
+            console.error('elasticsearch cluster is down!');
+        } else {
+            console.log('All is well');
+        }
+    });
+    es.search({
+       index: 'tests',
+       q: 'name:test3'
+    },function(err, resp){
+        if(err){
+            console.log('Error searching');
+            console.log(err);
+        }else{
+            if(resp.hits.total>0){
+                vm.obj = resp.hits.hits[0]._source;
+                console.log(JSON.stringify(resp.hits.hits[0]._source));
+            }
+            else {
+                console.log("not yuet");
+                console.log(resp.hits);
+            }
+        }
+    }
+    );
     vm.player = {
         str: "14",
         dex: "12",
@@ -54,8 +87,8 @@ function ControllerController() {
         var val = Math.ceil((vm.player.str - 9) * 0.25);
         return val >= 0 ? val : 0;
     }
-    function calcBaseToHit(){
-        var val = (vm.player.dex / 18 ) * 100;
+    function calcBaseToHit() {
+        var val = (vm.player.dex / 18) * 100;
         return val.toFixed(0);
     }
 

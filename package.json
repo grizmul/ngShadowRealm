@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "game",
   "main": "gulpfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "elasticsearch": "^10.0.1"
+  },
   "devDependencies": {
     "angular": "^1.4.8",
+    "elasticsearch": "^10.0.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-headerfooter": "^1.0.3",
