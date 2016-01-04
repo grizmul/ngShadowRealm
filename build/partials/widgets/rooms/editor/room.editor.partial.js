@@ -19,6 +19,16 @@ module.run(['$templateCache', function($templateCache) {
     '    <textarea rows="5" class="form-control" ng-model="vm.room.desc"  id="description" placeholder="Enter the room description"></textarea>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
+    '      <label for="toNorth">North location</label>\n' +
+    '      <div class="dropdown">\n' +
+    '          <button class="btn btn-default dropdown-toggle" type ="button" id="toNorth" data-toggle="dropdown">\n' +
+    '              ToNorth\n' +
+    '              <span class="caret"></span>\n' +
+    '              \n' +
+    '      \n' +
+    '      </div>\n' +
+    '  </div>\n' +
+    '  <div class="form-group">\n' +
     '  <pre>{{vm || json}}</pre>\n' +
     '  </div>  \n' +
     '\n' +

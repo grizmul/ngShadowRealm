@@ -38,35 +38,6 @@ function ControllerController(es) {
     
     vm.obj = {};
     
-    es.ping({
-        requestTimeout: 1000,
-        hello: "elasticsearch!"
-    }, function (error) {
-        if (error) {
-            console.error('elasticsearch cluster is down!');
-        } else {
-            console.log('All is well');
-        }
-    });
-    es.search({
-       index: 'tests',
-       q: 'name:test3'
-    },function(err, resp){
-        if(err){
-            console.log('Error searching');
-            console.log(err);
-        }else{
-            if(resp.hits.total>0){
-                vm.obj = resp.hits.hits[0]._source;
-                console.log(JSON.stringify(resp.hits.hits[0]._source));
-            }
-            else {
-                console.log("not yuet");
-                console.log(resp.hits);
-            }
-        }
-    }
-    );
     vm.player = {
         str: "14",
         dex: "12",

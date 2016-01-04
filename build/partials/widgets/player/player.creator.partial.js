@@ -65,7 +65,7 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '    <pre>{{vm.obj | json}}</pre>\n' +
+    '    <pre>{{vm.player | json}}</pre>\n' +
     '</div>');
 }]);
 })();

@@ -167,35 +167,6 @@ function ControllerController(es) {
     
     vm.obj = {};
     
-    es.ping({
-        requestTimeout: 1000,
-        hello: "elasticsearch!"
-    }, function (error) {
-        if (error) {
-            console.error('elasticsearch cluster is down!');
-        } else {
-            console.log('All is well');
-        }
-    });
-    es.search({
-       index: 'tests',
-       q: 'name:test3'
-    },function(err, resp){
-        if(err){
-            console.log('Error searching');
-            console.log(err);
-        }else{
-            if(resp.hits.total>0){
-                vm.obj = resp.hits.hits[0]._source;
-                console.log(JSON.stringify(resp.hits.hits[0]._source));
-            }
-            else {
-                console.log("not yuet");
-                console.log(resp.hits);
-            }
-        }
-    }
-    );
     vm.player = {
         str: "14",
         dex: "12",
@@ -470,7 +441,7 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '    <pre>{{vm.obj | json}}</pre>\n' +
+    '    <pre>{{vm.player | json}}</pre>\n' +
     '</div>');
 }]);
 })();
@@ -528,6 +499,16 @@ module.run(['$templateCache', function($templateCache) {
     '  <div class="form-group">\n' +
     '    <label for="description">Room description</label>\n' +
     '    <textarea rows="5" class="form-control" ng-model="vm.room.desc"  id="description" placeholder="Enter the room description"></textarea>\n' +
+    '  </div>\n' +
+    '  <div class="form-group">\n' +
+    '      <label for="toNorth">North location</label>\n' +
+    '      <div class="dropdown">\n' +
+    '          <button class="btn btn-default dropdown-toggle" type ="button" id="toNorth" data-toggle="dropdown">\n' +
+    '              ToNorth\n' +
+    '              <span class="caret"></span>\n' +
+    '              \n' +
+    '      \n' +
+    '      </div>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
     '  <pre>{{vm || json}}</pre>\n' +
