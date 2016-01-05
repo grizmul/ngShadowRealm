@@ -10,4 +10,7 @@
             <td>{{obj._source.desc}}</td>
         </tr>
 </table>
+<div >
+    <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="5" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>
+</div>
 <pre>{{vm.rooms}}</pre>

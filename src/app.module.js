@@ -4,7 +4,8 @@
            'elasticsearch',
            'ngRoute',
            'layout',
-           'rooms'
+           'rooms',
+           'ui.bootstrap'
         ])
         .service('es', function(esFactory){
             return esFactory({

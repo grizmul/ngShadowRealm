@@ -18,6 +18,9 @@ module.run(['$templateCache', function($templateCache) {
     '            <td>{{obj._source.desc}}</td>\n' +
     '        </tr>\n' +
     '</table>\n' +
+    '<div >\n' +
+    '    <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="5" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>\n' +
+    '</div>\n' +
     '<pre>{{vm.rooms}}</pre>');
 }]);
 })();

@@ -7,7 +7,8 @@
            'elasticsearch',
            'ngRoute',
            'layout',
-           'rooms'
+           'rooms',
+           'ui.bootstrap'
         ])
         .service('es', function(esFactory){
             return esFactory({
@@ -40,21 +41,21 @@
 (function() {
     'use strict';
 
+
+    angular.module('rooms', [
+        
+    ]);
+
+})();
+(function() {
+    'use strict';
+
    angular 
         .module('Player',[ 
            'HtmlPartials'
         ])
         
         ; 
-
-})();
-(function() {
-    'use strict';
-
-
-    angular.module('rooms', [
-        
-    ]);
 
 })();
 (function() {
@@ -115,6 +116,71 @@ function config($routeProvider) {
         ;
 
 } 
+
+})();
+(function() {
+    'use strict';
+
+angular
+    .module('rooms')
+    .directive('listRooms', ListRoomsDirective);
+
+function ListRoomsDirective() {
+    return {
+        bindToController: true,
+        controller: ListRoomsController,
+        controllerAs: 'vm',
+        templateUrl: 'rooms.list.partial.html',
+        restrict: 'A'
+
+    };
+}
+
+ListRoomsController.$inject = ['es'];
+function ListRoomsController(es) {
+    var vm = this;
+    vm.totalItems = 1000;
+    vm.currentPage = 1;
+    var size = 5;
+    vm.pageChanged = pageChanged;
+
+
+    es.count({
+        index: 'rooms',
+        q: 'name:*',
+    }, function (err, resp) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(resp);
+            vm.totalItems = resp.count;
+        }
+    });
+
+
+    pageChanged();
+
+    function pageChanged() {
+        es.search({
+            index: 'rooms',
+            q: 'name:*',
+            size: size,
+            from: vm.currentPage * size - size
+        }).then(function (resp) {
+            if (resp.hits.total > 0) {
+                console.log(resp.hits.hits);
+                vm.rooms = resp.hits.hits;
+            }
+            else {
+                console.log(resp.hits);
+            }
+        }, function (err) {
+            console.log(err);
+        });
+
+    }
+
+}
 
 })();
 (function() {
@@ -236,50 +302,6 @@ function ControllerController(es) {
     'use strict';
 
 angular
-    .module('rooms')
-    .directive('listRooms', ListRoomsDirective);
-    
-function ListRoomsDirective(){
-     return {
-        bindToController: true,
-        controller: ListRoomsController,
-        controllerAs: 'vm',
-        templateUrl: 'rooms.list.partial.html',
-        restrict: 'A'
-
-    };
-}
-
-ListRoomsController.$inject = ['es'];
-function ListRoomsController(es){
-    var vm = this;
-    
-    es.search({
-        index: 'rooms',
-        q: 'name:*'
-    }, function (err, resp) {
-        if (err) {
-            console.log('Error searching');
-            console.log(err);
-        } else {
-            if (resp.hits.total > 0) {
-                console.log(resp.hits.hits);
-                vm.rooms = resp.hits.hits;
-            }
-            else {
-                console.log("not yuet");
-                console.log(resp.hits);
-            }
-        }
-    });
-    
-}
-
-})();
-(function() {
-    'use strict';
-
-angular
     .module('room.editor')
     .directive('roomEditor', RoomEditorDirective);
 
@@ -303,36 +325,8 @@ function RoomEditorController(es) {
         name: '',
         desc: ''
     };
-    es.ping({
-        requestTimeout: 1000,
-        hello: "elasticsearch!"
-    }, function (error) {
-        if (error) {
-            console.error('elasticsearch cluster is down!');
-        } else {
-            console.log('All is well');
-        }
-    });
-    es.search({
-        index: 'rooms',
-        q: 'name:*'
-    }, function (err, resp) {
-        if (err) {
-            console.log('Error searching');
-            console.log(err);
-        } else {
-            if (resp.hits.total > 0) {
-                console.log(resp.hits.hits);
-                vm.obj = angular.fromJson(resp.hits.hits);
-                console.log(JSON.stringify(resp.hits.hits[0]._source));
-            }
-            else {
-                console.log("not yuet");
-                console.log(resp.hits);
-            }
-        }
-    });
-    
+
+
     function saveRoom() {
         console.log("saving " + JSON.stringify(vm.room) + " as " + angular.toJson(vm.room, false));
         console.log(vm.room.name);
@@ -341,14 +335,12 @@ function RoomEditorController(es) {
             type: 'room',
             id: vm.room.name,
             body: vm.room
-        }, function (err, resp) {
-        if (err) {
-            console.log('Error creating');
-            console.log(err);
-        } else {
+        }).then(function (resp) {
             console.log("success");
-        }
-    });
+        }, function (err) {
+            console.log(err);
+        });
+
     }
 
 }
@@ -471,6 +463,9 @@ module.run(['$templateCache', function($templateCache) {
     '            <td>{{obj._source.desc}}</td>\n' +
     '        </tr>\n' +
     '</table>\n' +
+    '<div >\n' +
+    '    <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="5" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>\n' +
+    '</div>\n' +
     '<pre>{{vm.rooms}}</pre>');
 }]);
 })();
