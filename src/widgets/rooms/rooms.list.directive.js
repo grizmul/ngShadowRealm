@@ -16,7 +16,7 @@ function ListRoomsDirective() {
 ListRoomsController.$inject = ['es'];
 function ListRoomsController(es) {
     var vm = this;
-    vm.totalItems = 1000;
+    vm.totalItems = 1;
     vm.currentPage = 1;
     var size = 5;
     vm.pageChanged = pageChanged;
