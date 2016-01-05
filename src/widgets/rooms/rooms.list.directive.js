@@ -18,7 +18,7 @@ function ListRoomsController(es) {
     var vm = this;
     vm.totalItems = 1;
     vm.currentPage = 1;
-    var size = 5;
+    vm.size = 10;
     vm.pageChanged = pageChanged;
 
 
@@ -41,8 +41,8 @@ function ListRoomsController(es) {
         es.search({
             index: 'rooms',
             q: 'name:*',
-            size: size,
-            from: vm.currentPage * size - size
+            size: vm.size,
+            from: vm.currentPage * vm.size - vm.size
         }).then(function (resp) {
             if (resp.hits.total > 0) {
                 console.log(resp.hits.hits);

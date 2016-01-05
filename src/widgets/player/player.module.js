@@ -2,5 +2,4 @@
         .module('Player',[ 
            'HtmlPartials'
         ])
-        
         ; 

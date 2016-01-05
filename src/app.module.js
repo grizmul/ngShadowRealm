@@ -5,7 +5,8 @@
            'ngRoute',
            'layout',
            'rooms',
-           'ui.bootstrap'
+           'ui.bootstrap',
+           'ngAnimate'
         ])
         .service('es', function(esFactory){
             return esFactory({

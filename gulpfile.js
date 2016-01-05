@@ -49,7 +49,7 @@ gulp.task('webserver', function() {
     }));
 });
 gulp.task('watchSrc', function(){
-    gulp.watch('src/**/*', ['jshint','copy', 'concat']);
+    gulp.watch(['src/**/*','dist/css/my.css'], ['jshint','copy', 'concat']);
 });
 
 

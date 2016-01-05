@@ -13,18 +13,31 @@ function RoomEditorDirective() {
 
     };
 }
-RoomEditorController.$inject = ['es'];
-function RoomEditorController(es) {
+RoomEditorController.$inject = ['es', '$timeout'];
+function RoomEditorController(es, $timeout) {
     var vm = this;
     vm.saveRoom = saveRoom;
-
+    vm.clearAlerts=clearAlerts;
+    vm.saving = false;
+    
+    vm.alerts = [   
+    ];
     vm.room = {
         name: '',
         desc: ''
     };
 
 
+    function clearAlerts(){
+        vm.alerts.length = 0;    
+    }
+    
+    
     function saveRoom() {
+        vm.saving = true;
+        $timeout(function(){
+            vm.saving = false;
+        }, 2500);
         console.log("saving " + JSON.stringify(vm.room) + " as " + angular.toJson(vm.room, false));
         console.log(vm.room.name);
         es.create({
@@ -33,7 +46,12 @@ function RoomEditorController(es) {
             id: vm.room.name,
             body: vm.room
         }).then(function (resp) {
-            console.log("success");
+            vm.alerts.push({
+               type: 'success',
+               msg : 'Saved room ' + vm.room.name
+            });
+            vm.room.name='';
+            vm.room.desc=''; 
         }, function (err) {
             console.log(err);
         });

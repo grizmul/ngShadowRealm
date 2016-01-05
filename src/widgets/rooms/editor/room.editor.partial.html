@@ -1,4 +1,5 @@
-<div class="h1">Room Editor</div>
+<div class="h1">Room Editor <i class="fa fa-spinner" ng-class="{'fa-spin' : vm.saving}"></i><uib-alert ng-repeat='alert in vm.alerts'   type='{{alert.type}}' dismiss-on-timeout='1500' close='vm.clearAlerts()'>{{alert.msg}}</uib-alert></div>
+
 <div class="jumbotron">
     
 <form>
@@ -24,13 +25,10 @@
   <pre>{{vm || json}}</pre>
   </div>  
 
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"> Check me out
-    </label>
-  </div>
   <button type="submit" ng-click="vm.saveRoom()" class="btn btn-default">Save</button>
 
 
 </form>
+
 </div>
+

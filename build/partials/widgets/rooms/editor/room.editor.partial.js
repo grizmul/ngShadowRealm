@@ -6,7 +6,8 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('room.editor.partial.html',
-    '<div class="h1">Room Editor</div>\n' +
+    '<div class="h1">Room Editor <i class="fa fa-spinner" ng-class="{\'fa-spin\' : vm.saving}"></i><uib-alert ng-repeat=\'alert in vm.alerts\'   type=\'{{alert.type}}\' dismiss-on-timeout=\'1500\' close=\'vm.clearAlerts()\'>{{alert.msg}}</uib-alert></div>\n' +
+    '\n' +
     '<div class="jumbotron">\n' +
     '    \n' +
     '<form>\n' +
@@ -32,15 +33,13 @@ module.run(['$templateCache', function($templateCache) {
     '  <pre>{{vm || json}}</pre>\n' +
     '  </div>  \n' +
     '\n' +
-    '  <div class="checkbox">\n' +
-    '    <label>\n' +
-    '      <input type="checkbox"> Check me out\n' +
-    '    </label>\n' +
-    '  </div>\n' +
     '  <button type="submit" ng-click="vm.saveRoom()" class="btn btn-default">Save</button>\n' +
     '\n' +
     '\n' +
     '</form>\n' +
-    '</div>');
+    '\n' +
+    '</div>\n' +
+    '\n' +
+    '');
 }]);
 })();

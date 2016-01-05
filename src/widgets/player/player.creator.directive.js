@@ -4,10 +4,6 @@ angular
 
 //Directive.$inject = ['dependency1'];
 function Directive() {//dependency1) {
-    // Usage:
-    //
-    // Creates:
-    // 
     var directive = {
         bindToController: true,
         controller: ControllerController,

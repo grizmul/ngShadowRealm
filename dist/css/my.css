@@ -1,0 +1,10 @@
+.fade-in.ng-enter {
+    transition: 0.8s linear all;
+    opacity: 0;
+}
+.fade-in.ng-enter-stagger {
+    transition-delay: 0.1s;
+}
+.fade-in.ng-enter.ng-enter-active {
+  opacity: 1; 
+}

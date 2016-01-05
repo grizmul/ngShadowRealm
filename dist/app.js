@@ -8,7 +8,8 @@
            'ngRoute',
            'layout',
            'rooms',
-           'ui.bootstrap'
+           'ui.bootstrap',
+           'ngAnimate'
         ])
         .service('es', function(esFactory){
             return esFactory({
@@ -45,7 +46,6 @@
         .module('Player',[ 
            'HtmlPartials'
         ])
-        
         ; 
 
 })();
@@ -134,10 +134,6 @@ angular
 
 //Directive.$inject = ['dependency1'];
 function Directive() {//dependency1) {
-    // Usage:
-    //
-    // Creates:
-    // 
     var directive = {
         bindToController: true,
         controller: ControllerController,
@@ -256,7 +252,7 @@ function ListRoomsController(es) {
     var vm = this;
     vm.totalItems = 1;
     vm.currentPage = 1;
-    var size = 5;
+    vm.size = 10;
     vm.pageChanged = pageChanged;
 
 
@@ -279,8 +275,8 @@ function ListRoomsController(es) {
         es.search({
             index: 'rooms',
             q: 'name:*',
-            size: size,
-            from: vm.currentPage * size - size
+            size: vm.size,
+            from: vm.currentPage * vm.size - vm.size
         }).then(function (resp) {
             if (resp.hits.total > 0) {
                 console.log(resp.hits.hits);
@@ -316,18 +312,31 @@ function RoomEditorDirective() {
 
     };
 }
-RoomEditorController.$inject = ['es'];
-function RoomEditorController(es) {
+RoomEditorController.$inject = ['es', '$timeout'];
+function RoomEditorController(es, $timeout) {
     var vm = this;
     vm.saveRoom = saveRoom;
-
+    vm.clearAlerts=clearAlerts;
+    vm.saving = false;
+    
+    vm.alerts = [   
+    ];
     vm.room = {
         name: '',
         desc: ''
     };
 
 
+    function clearAlerts(){
+        vm.alerts.length = 0;    
+    }
+    
+    
     function saveRoom() {
+        vm.saving = true;
+        $timeout(function(){
+            vm.saving = false;
+        }, 2500);
         console.log("saving " + JSON.stringify(vm.room) + " as " + angular.toJson(vm.room, false));
         console.log(vm.room.name);
         es.create({
@@ -336,7 +345,12 @@ function RoomEditorController(es) {
             id: vm.room.name,
             body: vm.room
         }).then(function (resp) {
-            console.log("success");
+            vm.alerts.push({
+               type: 'success',
+               msg : 'Saved room ' + vm.room.name
+            });
+            vm.room.name='';
+            vm.room.desc=''; 
         }, function (err) {
             console.log(err);
         });
@@ -451,6 +465,7 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('rooms.list.partial.html',
+    '\n' +
     '<table class="table table-striped table-hover table-condensed">\n' +
     '    <thead>\n' +
     '        <tr>\n' +
@@ -458,15 +473,15 @@ module.run(['$templateCache', function($templateCache) {
     '            <th>Description</th>\n' +
     '        </tr>\n' +
     '    </thead>\n' +
-    '        <tr ng-repeat="obj in vm.rooms">\n' +
-    '            <td>{{obj._source.name}}</td>\n' +
-    '            <td>{{obj._source.desc}}</td>\n' +
+    '        <tr ng-repeat="obj in vm.rooms" class="fade-in">\n' +
+    '            <td>{{obj._source.name}}</td> \n' +
+    '            <td>{{obj._source.desc}}</td> \n' +
     '        </tr>\n' +
     '</table>\n' +
-    '<div >\n' +
-    '    <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="5" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>\n' +
-    '</div>\n' +
-    '<pre>{{vm.rooms}}</pre>');
+    '<div>\n' +
+    '    <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="{{vm.size}}" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>\n' +
+    '</div> \n' +
+    '<pre>{{vm.rooms}}</pre> ');
 }]);
 })();
 
@@ -483,7 +498,8 @@ try {
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('room.editor.partial.html',
-    '<div class="h1">Room Editor</div>\n' +
+    '<div class="h1">Room Editor <i class="fa fa-spinner" ng-class="{\'fa-spin\' : vm.saving}"></i><uib-alert ng-repeat=\'alert in vm.alerts\'   type=\'{{alert.type}}\' dismiss-on-timeout=\'1500\' close=\'vm.clearAlerts()\'>{{alert.msg}}</uib-alert></div>\n' +
+    '\n' +
     '<div class="jumbotron">\n' +
     '    \n' +
     '<form>\n' +
@@ -509,16 +525,14 @@ module.run(['$templateCache', function($templateCache) {
     '  <pre>{{vm || json}}</pre>\n' +
     '  </div>  \n' +
     '\n' +
-    '  <div class="checkbox">\n' +
-    '    <label>\n' +
-    '      <input type="checkbox"> Check me out\n' +
-    '    </label>\n' +
-    '  </div>\n' +
     '  <button type="submit" ng-click="vm.saveRoom()" class="btn btn-default">Save</button>\n' +
     '\n' +
     '\n' +
     '</form>\n' +
-    '</div>');
+    '\n' +
+    '</div>\n' +
+    '\n' +
+    '');
 }]);
 })();
 
