@@ -19,6 +19,7 @@ function RoomEditorController(es, $timeout) {
     vm.saveRoom = saveRoom;
     vm.clearAlerts=clearAlerts;
     vm.saving = false;
+  
     
     vm.alerts = [   
     ];
@@ -26,7 +27,22 @@ function RoomEditorController(es, $timeout) {
         name: '',
         desc: ''
     };
+    vm.getLocation=getLocation;
+    vm.s=s;
+    
 
+    function s($item, $model, $label){
+        console.log($item);
+        console.log($model);
+        console.log($label);
+        vm.asyncSelected = '';
+    }
+    
+    function getLocation(x){
+        console.log(x);
+        return ['aa', 'bb', 'cc'];
+        
+    }
 
     function clearAlerts(){
         vm.alerts.length = 0;    

@@ -8,3 +8,11 @@
 .fade-in.ng-enter.ng-enter-active {
   opacity: 1; 
 }
+
+.ff.ng-enter{
+    animation: bounce 1s;
+}
+
+.ff.ng-leave{
+    animation: hinge 1s;
+}

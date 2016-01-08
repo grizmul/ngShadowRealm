@@ -247,15 +247,17 @@ function ListRoomsDirective() {
     };
 }
 
-ListRoomsController.$inject = ['es'];
-function ListRoomsController(es) {
+ListRoomsController.$inject = ['es', '$animate'];
+function ListRoomsController(es, $animate) {
     var vm = this;
     vm.totalItems = 1;
     vm.currentPage = 1;
     vm.size = 10;
     vm.pageChanged = pageChanged;
-
-
+    vm.removeRoom=removeRoom;
+    vm.gone = false;
+    vm.msgs=["hi","bye","sky"];
+    
     es.count({
         index: 'rooms',
         q: 'name:*',
@@ -268,7 +270,9 @@ function ListRoomsController(es) {
         }
     });
 
-
+    function removeRoom(obj){
+       vm.msgs.splice(1,1);
+    }
     pageChanged();
 
     function pageChanged() {
@@ -318,6 +322,7 @@ function RoomEditorController(es, $timeout) {
     vm.saveRoom = saveRoom;
     vm.clearAlerts=clearAlerts;
     vm.saving = false;
+  
     
     vm.alerts = [   
     ];
@@ -325,7 +330,22 @@ function RoomEditorController(es, $timeout) {
         name: '',
         desc: ''
     };
+    vm.getLocation=getLocation;
+    vm.s=s;
+    
 
+    function s($item, $model, $label){
+        console.log($item);
+        console.log($model);
+        console.log($label);
+        vm.asyncSelected = '';
+    }
+    
+    function getLocation(x){
+        console.log(x);
+        return ['aa', 'bb', 'cc'];
+        
+    }
 
     function clearAlerts(){
         vm.alerts.length = 0;    
@@ -473,15 +493,19 @@ module.run(['$templateCache', function($templateCache) {
     '            <th>Description</th>\n' +
     '        </tr>\n' +
     '    </thead>\n' +
-    '        <tr ng-repeat="obj in vm.rooms" class="fade-in">\n' +
+    '        <tr ng-repeat="obj in vm.rooms" >\n' +
+    '            <td><i class="fa fa-trash"  ng-click="vm.removeRoom(obj)"></i></td>\n' +
     '            <td>{{obj._source.name}}</td> \n' +
-    '            <td>{{obj._source.desc}}</td> \n' +
+    '            <td><div>{{obj._source.desc}}</div></td> \n' +
     '        </tr>\n' +
     '</table>\n' +
     '<div>\n' +
     '    <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="{{vm.size}}" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>\n' +
     '</div> \n' +
-    '<pre>{{vm.rooms}}</pre> ');
+    '<ul class="list-group">\n' +
+    '    <li  class="list-group-item ff" ng-repeat="msg in vm.msgs">{{msg}}</li>\n' +
+    '</ul>\n' +
+    '<pre>{{vm}}</pre> ');
 }]);
 })();
 
@@ -509,7 +533,7 @@ module.run(['$templateCache', function($templateCache) {
     '  </div>\n' +
     '  <div class="form-group">\n' +
     '    <label for="description">Room description</label>\n' +
-    '    <textarea rows="5" class="form-control" ng-model="vm.room.desc"  id="description" placeholder="Enter the room description"></textarea>\n' +
+    '    <textarea rows="5" class="form-control"  required ng-model="vm.room.desc"  id="description" placeholder="Enter the room description"></textarea>\n' +
     '  </div>\n' +
     '  <div class="form-group">\n' +
     '      <label for="toNorth">North location</label>\n' +
@@ -527,8 +551,25 @@ module.run(['$templateCache', function($templateCache) {
     '\n' +
     '  <button type="submit" ng-click="vm.saveRoom()" class="btn btn-default">Save</button>\n' +
     '\n' +
+    '<input type="text" \n' +
+    '        ng-model="vm.asyncSelected" \n' +
+    '        placeholder="Locations loaded via $http" \n' +
+    '        uib-typeahead="address for address in vm.getLocation($viewValue)" \n' +
+    '        typeahead-loading="loadingLocations" \n' +
+    '        typeahead-no-results="noResults" \n' +
+    '        typeahead-editable=false\n' +
+    '        typeahead-on-select="vm.s($item, $model,$label)"\n' +
+    '        typeahead-wait-ms="400"\n' +
+    '        class="form-control">\n' +
+    '    <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>\n' +
+    '    <div ng-show="noResults">\n' +
+    '      <i class="glyphicon glyphicon-remove"></i> No Results Found\n' +
+    '    </div>\n' +
+    '    \n' +
+    '<script type="text/ng-template" id="/tpl.html">\n' +
+    '  Content of the template.\n' +
+    '</script>\n' +
     '\n' +
-    '</form>\n' +
     '\n' +
     '</div>\n' +
     '\n' +

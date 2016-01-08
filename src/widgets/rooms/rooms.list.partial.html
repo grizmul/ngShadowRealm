@@ -6,12 +6,16 @@
             <th>Description</th>
         </tr>
     </thead>
-        <tr ng-repeat="obj in vm.rooms" class="fade-in">
+        <tr ng-repeat="obj in vm.rooms" >
+            <td><i class="fa fa-trash"  ng-click="vm.removeRoom(obj)"></i></td>
             <td>{{obj._source.name}}</td> 
-            <td>{{obj._source.desc}}</td> 
+            <td><div>{{obj._source.desc}}</div></td> 
         </tr>
 </table>
 <div>
     <uib-pagination total-items="vm.totalItems" max-size="10" items-per-page="{{vm.size}}" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>
 </div> 
-<pre>{{vm.rooms}}</pre> 
+<ul class="list-group">
+    <li  class="list-group-item ff" ng-repeat="msg in vm.msgs">{{msg}}</li>
+</ul>
+<pre>{{vm}}</pre> 

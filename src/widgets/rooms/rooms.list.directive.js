@@ -13,15 +13,17 @@ function ListRoomsDirective() {
     };
 }
 
-ListRoomsController.$inject = ['es'];
-function ListRoomsController(es) {
+ListRoomsController.$inject = ['es', '$animate'];
+function ListRoomsController(es, $animate) {
     var vm = this;
     vm.totalItems = 1;
     vm.currentPage = 1;
     vm.size = 10;
     vm.pageChanged = pageChanged;
-
-
+    vm.removeRoom=removeRoom;
+    vm.gone = false;
+    vm.msgs=["hi","bye","sky"];
+    
     es.count({
         index: 'rooms',
         q: 'name:*',
@@ -34,7 +36,9 @@ function ListRoomsController(es) {
         }
     });
 
-
+    function removeRoom(obj){
+       vm.msgs.splice(1,1);
+    }
     pageChanged();
 
     function pageChanged() {
