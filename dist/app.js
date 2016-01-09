@@ -42,6 +42,15 @@
 (function() {
     'use strict';
 
+angular.module('acMselect', [
+    
+])
+.directive('acMonsters')
+
+})();
+(function() {
+    'use strict';
+
    angular 
         .module('Player',[ 
            'HtmlPartials'
