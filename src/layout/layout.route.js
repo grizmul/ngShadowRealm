@@ -16,6 +16,9 @@ function config($routeProvider) {
         .when('/rooms', {
             template : '<div list-rooms/>'
         })
+        .when('/npcs',{
+            template : '<div npcs-mselect/>'
+        })
         .when('/',{
             template : 'Welcome'
         })

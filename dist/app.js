@@ -9,7 +9,8 @@
            'layout',
            'rooms',
            'ui.bootstrap',
-           'ngAnimate'
+           'ngAnimate',
+           'npcs'
         ])
         .service('es', function(esFactory){
             return esFactory({
@@ -42,10 +43,12 @@
 (function() {
     'use strict';
 
-angular.module('acMselect', [
-    
-])
-.directive('acMonsters')
+
+
+angular.module('npcs', [
+                    'angular.chosen'
+]);
+
 
 })();
 (function() {
@@ -119,12 +122,56 @@ function config($routeProvider) {
         .when('/rooms', {
             template : '<div list-rooms/>'
         })
+        .when('/npcs',{
+            template : '<div npcs-mselect/>'
+        })
         .when('/',{
             template : 'Welcome'
         })
         ;
 
 } 
+
+})();
+(function() {
+    'use strict';
+
+angular
+    .module('npcs')
+    .directive('npcsMselect', Constructor);
+
+
+function Constructor(){
+    var width = "250px !important";
+    var directive = {
+        bindToController: true,
+        controller: Controller,
+        controllerAs: 'vm',
+        restrict: 'A',
+        templateUrl: 'npcsMselect.partial.html',
+        link: link
+        
+    };
+    
+    return directive;
+    function link( scope, element, attrs){
+        //var select = element.find('select.npcsMselect');
+        var select = element.find('chosen-container'); 
+        $( select).css(
+            {
+                'width': width
+            });        
+    }
+   
+}
+
+function Controller(){
+    var vm = this;
+    vm.npcs = ['A very long monster name goes here', 'Wolf', 'Orc', 'Goblin', 'Gnome', 'Elf', 'Vagabond'];
+    vm.selected = []; 
+    
+}
+
 
 })();
 (function() {
@@ -401,6 +448,53 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('dice.partial.html',
     '<div>hi</div>');
+}]);
+})();
+
+
+})();
+(function() {
+    'use strict';
+
+(function(module) {
+try {
+  module = angular.module('HtmlPartials');
+} catch (e) {
+  module = angular.module('HtmlPartials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('acNpcSelect.partial.html',
+    '<select chosen \n' +
+    '        ng-model="vm.selected" \n' +
+    '        ng-options="name as name for name in vm.npcs">\n' +
+    '</select> \n' +
+    '\n' +
+    'hello world');
+}]);
+})();
+
+
+})();
+(function() {
+    'use strict';
+
+(function(module) {
+try {
+  module = angular.module('HtmlPartials');
+} catch (e) {
+  module = angular.module('HtmlPartials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('npcsMselect.partial.html',
+    '      \n' +
+    '<select chosen\n' +
+    '        multiple\n' +
+    '        option="vm.npcs"\n' +
+    '        ng-model="vm.selected" \n' +
+    '        \n' +
+    '        ng-options="name as name for name in vm.npcs">\n' +
+    '</select>\n' +
+    '');
 }]);
 })();
 

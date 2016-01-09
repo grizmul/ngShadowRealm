@@ -6,7 +6,8 @@
            'layout',
            'rooms',
            'ui.bootstrap',
-           'ngAnimate'
+           'ngAnimate',
+           'npcs'
         ])
         .service('es', function(esFactory){
             return esFactory({
