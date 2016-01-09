@@ -1,4 +1,4 @@
 angular.module('acMselect', [
     
 ])
-.directive('acMonsters')
+.directive('acMonsters');
