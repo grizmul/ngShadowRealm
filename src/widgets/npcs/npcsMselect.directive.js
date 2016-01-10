@@ -15,7 +15,7 @@ function Constructor() {
     };
 
     return directive;
-    function link(scope, element, attrs) {
+    function link(scope, element, attrs) { 
         //       scope.vm.e = element;
         //var select = element.find('select.npcsMselect');
         //var select = element.children()[1];
@@ -24,14 +24,14 @@ function Constructor() {
         //  {
         //'width': width
         //});       
-        var list = attrs['ng-options'];
-        scope.$watch(list, function () {
-            element.trigger('chosen:updated');console.log("watch called"); 
-        }, true);
+        // var list = attrs['ng-options'];
+        // scope.$watch(list, function () {
+        //     element.trigger('chosen:updated');console.log("watch called"); 
+        // }, true);
 
-        scope.$watch(attrs['ngModel'], function() {
-            element.trigger('chosen:updated');console.log("watch called"); 
-        }, true);
+        // scope.$watch(attrs.ngModel, function() {
+        //     element.trigger('chosen:updated');console.log("watch called"); 
+        // }, true);
  
     }
 
@@ -54,8 +54,8 @@ function Controller(es, $timeout, $element, $scope) {
         if (resp.hits.total > 0) {
             console.log(resp.hits.hits);
             for (var i = 0; i < resp.hits.total; i++){
-                var obj = resp.hits.hits[i]['_source'];
-                obj.i = 'group ' + Math.round(i/2);
+                var obj = resp.hits.hits[i]._source;
+                obj.i = 'group ' + Math.round(i/2); 
                 vm.rooms.push(obj);
             } 
        
@@ -67,9 +67,9 @@ function Controller(es, $timeout, $element, $scope) {
             console.log(resp.hits);
         }
 
-    }, function (err) {
-        console.log(err);
-    });
+    }, function (err) { 
+        console.log(err);  
+    });  
 
 
 }

@@ -3,14 +3,16 @@ var webserver = require('gulp-webserver');
 var concat = require('gulp-concat');
 var headerfooter = require('gulp-headerfooter');
 var html2Js = require('gulp-ng-html2js');
-
 var jshint = require('gulp-jshint');
+ 
+
     
-gulp.task('jshint', function() {
+gulp.task('jshint',function() {
   return gulp.src('src/**/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });
+
 
 gulp.task('concat', function(){
     gulp.src([
