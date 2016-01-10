@@ -2,7 +2,8 @@
 <select chosen 
         multiple
         ng-model="vm.selected" 
-        ng-options="room.name for room in vm.rooms">
+        ng-options="room as room.name group by room.i for room in vm.rooms"
+        >
 </select>
 <label ng-show="vm.selected.length===0" style='color: red; padding: 3px;'><i class='fa fa-warning fa-lg ' ></i> Warning</label>
 <label  ng-show="vm.selected.length>0" style='color: green; padding: 3px;'><i class='fa fa-check fa-lg' ></i> </label>

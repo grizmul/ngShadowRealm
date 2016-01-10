@@ -53,8 +53,11 @@ function Controller(es, $timeout, $element, $scope) {
 
         if (resp.hits.total > 0) {
             console.log(resp.hits.hits);
-            for (var i = 0; i < resp.hits.total; i++)
-                vm.rooms.push(resp.hits.hits[i]['_source']); 
+            for (var i = 0; i < resp.hits.total; i++){
+                var obj = resp.hits.hits[i]['_source'];
+                obj.i = 'group ' + Math.round(i/2);
+                vm.rooms.push(obj);
+            } 
        
          //$element.find('.chosen').chosen();
             //$element.find('chosen').trigger('change');   
