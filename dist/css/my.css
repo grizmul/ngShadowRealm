@@ -17,6 +17,6 @@
     animation: hinge 1s;
 }
 
-.chosen-container9{
+.npcsMselect > .chosen-container  {
     width: 250px !important;
 }
