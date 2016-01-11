@@ -1,5 +1,6 @@
 
 
 angular.module('npcs', [
-                    'angular.chosen'
+                    'angular.chosen',
+                    'ui.select',
 ]);

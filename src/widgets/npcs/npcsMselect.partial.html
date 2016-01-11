@@ -1,10 +1,22 @@
-      
+<!--      
 <select chosen 
         multiple
+        class="npcsMselectSelect"
+        on-change="vm.doStuff()"
+        data-placeholder="Choose"
+        no-results-text='hello'
         ng-model="vm.selected" 
         ng-options="room as room.name group by room.i for room in vm.rooms"
         >
+        
 </select>
 <label ng-show="vm.selected.length===0" style='color: red; padding: 3px;'><i class='fa fa-warning fa-lg ' ></i> Warning</label>
 <label  ng-show="vm.selected.length>0" style='color: green; padding: 3px;'><i class='fa fa-check fa-lg' ></i> </label>
+-->
 <pre>{{vm}}</pre>
+<ui-select ng-model="vm.selected" multiple theme='bootstrap'>
+    <ui-select-match placeholder='asdf' >{{$item.name}}</ui-select-match>
+    <ui-select-choices repeat="room in vm.rooms | filter: $select.search track by room.name">
+        <div ng-bind-html="room.name | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>

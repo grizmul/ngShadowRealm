@@ -7,7 +7,8 @@
            'rooms',
            'ui.bootstrap',
            'ngAnimate',
-           'npcs'
+           'npcs',
+           'ngSanitize'
         ])
         .service('es', function(esFactory){
             return esFactory({

@@ -16,6 +16,8 @@ function Constructor() {
 
     return directive;
     function link(scope, element, attrs) { 
+        var x= 0;
+        //$('.npcsMselectSelect').chosen({width: '250px'});
         //       scope.vm.e = element;
         //var select = element.find('select.npcsMselect');
         //var select = element.children()[1];
@@ -36,32 +38,43 @@ function Constructor() {
     }
 
 }
-Controller.$inject = ['es', '$timeout', '$element', '$scope'];
-function Controller(es, $timeout, $element, $scope) {
+Controller.$inject = ['es', '$timeout', '$element'];
+function Controller(es, $timeout, $element) {
     var vm = this;
+    vm.selected;
     vm.npcs = ['A very long monster name goes here', 'Wolf', 'Orc', 'Goblin', 'Gnome', 'Elf', 'Vagabond'];
-    vm.rooms = [];
-    vm.selected = [];
+    //vm.rooms = undefined;
+    
+  vm.doStuff = function(){
+    //$('select').trigger('chosen:updated'); works
+    //$element.children().trigger('chosen:updated');
+    //$('.npcsMselect').children().trigger('chosen:updated');
+    //$('.npcsMselect > select').children().trigger('chosen:updated');
+    $('.npcsMselectSelect').trigger('chosen:updated');
+    console.log('trigger');
+      
+  }
   
+   $timeout(function(){
+       
    
     es.search({
         index: 'rooms',
         q: 'name:*',
-        size: 10,
+        size: 5,
         from: 0
     }).then(function (resp) {
 
         if (resp.hits.total > 0) {
+            vm.rooms = [];
             console.log(resp.hits.hits);
             for (var i = 0; i < resp.hits.total; i++){
                 var obj = resp.hits.hits[i]._source;
                 obj.i = 'group ' + Math.round(i/2); 
                 vm.rooms.push(obj);
             } 
-       
-         //$element.find('.chosen').chosen();
-            //$element.find('chosen').trigger('change');   
-            
+          vm.selected = vm.rooms[0];
+         //$element.children().trigger('chosen:updated');   
         }
         else {
             console.log(resp.hits);
@@ -70,6 +83,6 @@ function Controller(es, $timeout, $element, $scope) {
     }, function (err) { 
         console.log(err);  
     });  
-
+},1000);
 
 }
